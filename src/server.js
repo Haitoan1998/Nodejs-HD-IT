@@ -1,34 +1,35 @@
+require("dotenv").config(); //import thư viện dotenv để quán lý biến môi trường: lưu dữ liệu bí mật, tt nhạy cảm
 const express = require("express"); //commonjs-import thư viện Express
 const path = require("path"); //commonjs-import thư viện có sẵn khi cài nodejs:
 //để xử lý thao tác với đường dẫn path.join(), path.resolve(), path.dirname(), path.basename(), path.extname()
-require("dotenv").config(); //import thư viện dotenv để quán lý biến môi trường: lưu dữ liệu bí mật, tt nhạy cảm
+const configViewEngine = require("./config/viewEngine"); //import configViewEngine
+const webRouter = require("./routes/web"); //import router
+const mysql = require("mysql2"); //import mysql2
 
-// import express from "express";
-console.log(process.env);
 const app = express(); //app express
 const port = process.env.PORT || 8008; //PORT
 const hostname = process.env.HOST_NAME; //hostname
 
-//cấu hình templates engine
-app.set("views", path.join(__dirname, "views")); //thiết lập đường dẫn tới thư mục chứa các tệp tempalte engine (views) của ứng dụng
-app.set("view engine", ".ejs"); //thiết lập loại template engine mà ứng dụng sử dụng để tạo ra các trang HTML,với phần mở rộng là .ejs
-
-//cấu hình static files
-app.use(express.static(path.join(__dirname, "public")));
+//cấu hình templates engine, static files
+configViewEngine(app);
 
 //Khai báo route để biết website có những route nào
 //tại đây '/' mặc định là homepage
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use("/", webRouter);
+
+//test connection to DB
+// create the connection to database
+const connection = mysql.createConnection({
+  host: "localhost",
+  port: 3307, //default 3306
+  user: "root", //default:empty
+  password: "291098",
+  database: "haitoan98",
 });
-app.get("/abc", (req, res) => {
-  res.send("Hello World!");
-});
-app.get("/Check", (req, res) => {
-  res.send("<h1>HOI DAN IT<h1/>");
-});
-app.get("/example", (req, res) => {
-  res.render("example.ejs");
+// simple query
+connection.query("SELECT * FROM User", function (err, results, fields) {
+  console.log(">>>>>results =", results); // results contains rows returned by server
+  console.log(">>>>>fields=", fields); // fields contains extra meta data about results, if available
 });
 
 //run server trên port đã khởi tạo bên trên
