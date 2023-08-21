@@ -4,11 +4,15 @@ const path = require("path"); //commonjs-import thư viện có sẵn khi cài n
 //để xử lý thao tác với đường dẫn path.join(), path.resolve(), path.dirname(), path.basename(), path.extname()
 const configViewEngine = require("./config/viewEngine"); //import configViewEngine
 const webRouter = require("./routes/web"); //import router
-const mysql = require("mysql2"); //import mysql2
+const connection = require("./config/database"); //import module conection mysql2
 
 const app = express(); //app express
 const port = process.env.PORT || 8008; //PORT
 const hostname = process.env.HOST_NAME; //hostname
+
+//config req.body
+// app.use(express.json()); // Used to parse JSON bodies
+app.use(express.urlencoded()); //Parse URL-encoded bodies
 
 //cấu hình templates engine, static files
 configViewEngine(app);
@@ -18,14 +22,7 @@ configViewEngine(app);
 app.use("/", webRouter);
 
 //test connection to DB
-// create the connection to database
-const connection = mysql.createConnection({
-  host: "localhost",
-  port: 3307, //default 3306
-  user: "root", //default:empty
-  password: "291098",
-  database: "haitoan98",
-});
+
 // simple query
 connection.query("SELECT * FROM User", function (err, results, fields) {
   console.log(">>>>>results =", results); // results contains rows returned by server
