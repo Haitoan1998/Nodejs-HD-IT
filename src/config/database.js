@@ -1,4 +1,4 @@
-const mysql = require("mysql2"); //import mysql2
+const mysql = require("mysql2/promise"); //import mysql2
 require("dotenv").config(); //import thư viện dotenv để quán lý biến môi trường: lưu dữ liệu bí mật, tt nhạy cảm
 
 // // create the connection to database

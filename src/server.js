@@ -11,7 +11,7 @@ const port = process.env.PORT || 8008; //PORT
 const hostname = process.env.HOST_NAME; //hostname
 
 //config req.body
-// app.use(express.json()); // Used to parse JSON bodies
+app.use(express.json()); // Used to parse JSON bodies
 app.use(express.urlencoded()); //Parse URL-encoded bodies
 
 //cấu hình templates engine, static files
@@ -24,10 +24,10 @@ app.use("/", webRouter);
 //test connection to DB
 
 // simple query
-connection.query("SELECT * FROM User", function (err, results, fields) {
-  console.log(">>>>>results =", results); // results contains rows returned by server
-  console.log(">>>>>fields=", fields); // fields contains extra meta data about results, if available
-});
+// connection.query("SELECT * FROM User", function (err, results, fields) {
+//   console.log(">>>>>results =", results); // results contains rows returned by server
+//   console.log(">>>>>fields=", fields); // fields contains extra meta data about results, if available
+// });
 
 //run server trên port đã khởi tạo bên trên
 //nạp các thông tin khai báo ở trên rồi chạy(ở đây là route)

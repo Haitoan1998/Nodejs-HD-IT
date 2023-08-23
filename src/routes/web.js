@@ -10,6 +10,9 @@ router.get("/Check", homeController.getCheck);
 
 router.get("/example", homeController.getExample);
 
+router.get("/Create", homeController.RenderCreateUser);
 router.post("/Create-user", homeController.CreateUser);
+
+router.get("/edit-user/:id", homeController.EditUsers);
 
 module.exports = router;
